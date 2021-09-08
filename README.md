@@ -1,0 +1,1 @@
+# SWPUC32---Equidistant-Points-on-a-Hemisphere
