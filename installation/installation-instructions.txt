@@ -1,0 +1,6 @@
+Unzip the zip file to a folder fi. C:\temp in this example
+(change to the folder you want on both mentioned files)
+
+Then as an Administrator double click the Register.bat file.
+
+For unregistering double click the Unregister.bat file.
