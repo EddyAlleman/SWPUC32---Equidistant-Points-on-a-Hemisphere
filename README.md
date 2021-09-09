@@ -13,4 +13,6 @@ The folder images has some screenshots of various combinations of radius and rec
 
 The folders parts-Solidworks-2020 and parts-Solidworks-2021 have SolidWorks part files with the above mentioned variations.
 
-The folder installltion holds a zip file with the needede dll's and a simple instruction for installing.
+The folder installation holds a zip file with the needede dll's and a simple instruction for installing.
+
+And there is a tutorial that shows the addin usage.
