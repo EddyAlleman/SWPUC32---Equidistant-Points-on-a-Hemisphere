@@ -9,3 +9,4 @@ Requirements:
 
 2. Place equidistant points on the hemisphere (as close to the "equidistant" ideal as possible). Ideally, you should be able to modify the spacing and the distribution of points parametrically. If it is not possible to modify them parametrically, you should aim for a method that would reduce manual work during revisions.
 
+The folder images has some screenshots of various combinations of radius and recursion level
