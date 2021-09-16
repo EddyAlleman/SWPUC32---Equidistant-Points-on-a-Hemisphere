@@ -1,4 +1,4 @@
-﻿//*********************************************************************
+//*********************************************************************
 //Copyright(C) 2021 EDAL solutions BV
 //URL: https://www.edalsolutions.be
 //Using XCAD from Xarial
@@ -29,9 +29,10 @@ using System.Windows.Media.Media3D;
 
 namespace EquiDistAddin
 {
-    //--- Define the command manager buttons
+
     #region ENUMS
 
+    //--- Define the command manager buttons
     [Title("EQUIDIST")]//this name will be shown in the CommandManager TAB
     [Description("Equidistant Points on a Hemisphere (The Thomson Problem)")]
     [CommandGroupInfo(10)]
@@ -49,6 +50,22 @@ namespace EquiDistAddin
         CommandB2
 
     }
+
+    //--- Define the sphere optionboxes
+    public enum Options_sphere
+    {
+        [Title("Hemisphere")]
+        //[BitmapOptions(18, 18)]
+        [Icon(typeof(Resources), nameof(Resources.hemisphere))]
+        Hemisphere,
+
+        [Title("Sphere")]
+        //[BitmapOptions(18, 18)]
+        [Icon(typeof(Resources), nameof(Resources.sphere))]
+        Sphere
+
+    }
+
     #endregion
 
     //--- Define the PropertyManager Page
@@ -72,6 +89,41 @@ namespace EquiDistAddin
         public int Recursions { get; set; } = 1;
 
 
+        public class DataGroupInput
+        {
+
+            [Title("Sphere type")]
+            [Description("Choose a Hemisphere or generate the complete Sphere")]
+            [OptionBox]
+            //put the following separately for better code readability
+            //public enum Options_sphere
+            //{
+            //    Hemisphere,
+            //    Sphere
+            //}
+            [ComboBoxOptions(ComboBoxStyle_e.Sorted)]
+            public Options_sphere SphereOptions { get; set; } = Options_sphere.Hemisphere;
+
+            ////TODO ADD ACTIONS
+            //[BitmapButton(typeof(Resources), nameof(Resources.hemisphere))]
+            //public bool ToggleHemisphere { get; set; } = true;
+
+            //[BitmapButton(typeof(Resources), nameof(Resources.sphere))]
+            //public bool ToggleSphere { get; set; } = false;
+
+            [Title("Draw Normals")]
+            [Description("Draw the normals on the sphere for every point")]
+            [Icon(typeof(Resources), nameof(Resources.normals_sphere))]
+            //[ControlOptions(height: 16, width: 16)]//doesn't do anything
+            public bool NormalsChecked { get; set; } = false;
+
+        }
+
+        [Title("Options")]
+        public DataGroupInput Group1 { get; set; }
+
+
+        ////draw spike
     }
 
     //PMP handler
@@ -79,7 +131,7 @@ namespace EquiDistAddin
     [Title("Equidistant points on sphere")]
     public class MyPMPageData : SwPropertyManagerPageHandler
     {
-        [Title("Hemisphere options")]
+        [Title("Dimensions")]
         public DataModelSphereOptions InputSpherePoints { get; set; }
 
     }
@@ -156,6 +208,7 @@ namespace EquiDistAddin
         private void OnPageClosed(PageCloseReasons_e reason)
         {
 
+
             if (reason == PageCloseReasons_e.Okay)
             {
 
@@ -166,6 +219,11 @@ namespace EquiDistAddin
                 int recur = m_Data.InputSpherePoints.Recursions;
                 Debug.Print($"Recursions: {recur}");
 
+                Options_sphere hemi = m_Data.InputSpherePoints.Group1.SphereOptions;
+                Debug.Print($"Type of sphere: {hemi}");
+
+                bool normals = m_Data.InputSpherePoints.Group1.NormalsChecked;
+                Debug.Print($"Normals on sphere: {normals}");
 
 
                 ISldWorks swApp = this.Application.Sw;
@@ -188,20 +246,7 @@ namespace EquiDistAddin
                     sketchMgr.AddToDB = true;
                     sketchMgr.Insert3DSketch(true);
 
-                    //draw points
-                    for (int i = 0; i < nPositions; i++)
-                    {
-                        //eliminate points where y > 0
-                        if (positions[i].Y >= 0)
-                        {
-                            //adjust the unit sphere radius to the requested radius
-                            SketchPoint pt = sketchMgr.CreatePoint(rad * positions[i].X, rad * positions[i].Y, rad * positions[i].Z);
-
-                            //add fix contrain to all points : takes a lot of resources
-                            // swModel.SketchAddConstraints("sgFIXED");
-                        }
-
-                    }
+                    CreatePointsAndNormals(rad, hemi, normals, positions, nPositions, sketchMgr);
 
                     //close 3Dsketch
                     sketchMgr.InsertSketch(true);
@@ -211,15 +256,36 @@ namespace EquiDistAddin
 
             }
 
-
             #endregion
 
         }
 
+        private static void CreatePointsAndNormals(double rad, Options_sphere hemi, bool normals, Point3DCollection positions, int nPositions, SketchManager sketchMgr)
+        {
+            //normals length factor to radius
+            double factor = 1.2 * rad;
+
+            //define limit value in Y direction. everything above tha value will be shown. 
+            double ceiling = (hemi == Options_sphere.Hemisphere) ? 0.0 : -1.0;
 
 
+            for (int i = 0; i < nPositions; i++)
+            {
 
+                if (positions[i].Y >= ceiling)
+                {
+
+                    if (normals)
+                    {
+                        sketchMgr.CreateLine(rad * positions[i].X, rad * positions[i].Y, rad * positions[i].Z, factor * positions[i].X, factor * positions[i].Y, factor * positions[i].Z);
+                    }
+                    else
+                    {
+                        SketchPoint pt = sketchMgr.CreatePoint(rad * positions[i].X, rad * positions[i].Y, rad * positions[i].Z);
+                    }
+                }
+            }
+        }
 
     }
-
 }
