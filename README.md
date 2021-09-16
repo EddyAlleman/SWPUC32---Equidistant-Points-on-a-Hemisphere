@@ -11,7 +11,7 @@ Requirements:
 
 We used the principle of a Soccerball / football to generate the points.
 
-<img src="https://github.com/EddyAlleman/SWPUC32---Equidistant-Points-on-a-Hemisphere/blob/main/soccer-ball.png" alt="Soccerball" width="200">
+<img src="https://github.com/EddyAlleman/SWPUC32---Equidistant-Points-on-a-Hemisphere/blob/main/soccer-ball.png" alt="Soccerball" width="300">
 
 The folder images has some screenshots of various combinations of radius and recursion level.
 
@@ -20,3 +20,5 @@ The folders parts-Solidworks-2020 and parts-Solidworks-2021 have SolidWorks part
 The folder installation holds a zip file with the needed dll's and a simple instruction for installing.
 
 And there is a tutorial that shows the addin usage.
+
+<img src="https://github.com/EddyAlleman/SWPUC32---Equidistant-Points-on-a-Hemisphere/blob/main/images/ui.png" alt="Soccerball" width="300">
