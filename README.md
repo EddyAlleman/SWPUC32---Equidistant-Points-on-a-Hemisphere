@@ -10,6 +10,7 @@ Requirements:
 2. Place equidistant points on the hemisphere (as close to the "equidistant" ideal as possible). Ideally, you should be able to modify the spacing and the distribution of points parametrically. If it is not possible to modify them parametrically, you should aim for a method that would reduce manual work during revisions.
 
 We used the principle of a Soccerball / football to generate the points.
+<img src="https://github.com/EddyAlleman/SWPUC32---Equidistant-Points-on-a-Hemisphere/blob/main/soccer-ball.png" alt="Soccerball" width="200">
 
 The folder images has some screenshots of various combinations of radius and recursion level.
 
