@@ -181,7 +181,7 @@ namespace EquiDistAddin
                                  "tweaked code from the following website: " + NewLine +
                                  "http://blog.andreaskahler.com" + NewLine +
                                   NewLine +
-                                 "Author: Eddy Alleman - https://www.edalsolutions.be/index.php/nl-NL/automatisatie/addins";
+                                 "Author: Eddy Alleman - https://www.edalsolutions.be/";
 
                     Application.ShowMessageBox(msg, MessageBoxIcon_e.Info, MessageBoxButtons_e.Ok);
                     break;
